@@ -3936,14 +3936,19 @@ public class SphereEngine implements ApplicationListener, AndroidWallpaperListen
             // return to, and hides when you swipe ≥1 page away within that session.
             // On offset-reporting launchers (Pixel Launcher, etc.) this field is
             // unused — the assignment is harmless.
-            if (!LauncherStateService.LauncherState.serviceConnected) {
+            //
+            // ALWAYS re-anchor, even when the accessibility service is connected.
+            // The a11y service can report a STALE page number (it is only refreshed
+            // when the launcher's page indicator is visible), and trusting that stale
+            // value is what makes the sphere stay hidden forever after returning home.
+            // Re-anchoring here is safe: updatePageVisibility() re-applies the
+            // a11y page on the very next frame if it is fresh and valid.
+            {
                 int targetActivePage = activePage;
 
                 inferredPage = targetActivePage;
                 Log.d(TAG, "setVisible: re-anchored inferredPage=" + inferredPage
                         + " (activePage=" + targetActivePage + ")");
-            } else {
-                Log.d(TAG, "setVisible: skipped re-anchor, relying on LauncherStateService");
             }
 
             // ─── Return animation: sphere fades/scales back in after a launch ──
