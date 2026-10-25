@@ -2983,7 +2983,15 @@ public class SphereEngine implements ApplicationListener, AndroidWallpaperListen
 
         if (LauncherStateService.LauncherState.serviceConnected) {
             int a11yPage = LauncherStateService.LauncherState.page;
-            if (a11yPage >= 1) {
+            int a11yPageCount = LauncherStateService.LauncherState.pageCount;
+            // Only trust the a11y page when it is FRESH (reported recently)
+            // and SANE (within the reported page count). A stale or
+            // out-of-range value would otherwise hide the sphere for good.
+            long a11yAgeNs = System.nanoTime() - LauncherStateService.LauncherState.updatedNanos;
+            boolean a11yPageFresh = a11yAgeNs < 10_000_000_000L;
+            boolean a11yPageSane = a11yPage >= 1
+                    && (a11yPageCount <= 0 || a11yPage <= a11yPageCount);
+            if (a11yPage >= 1 && a11yPageFresh && a11yPageSane) {
                 inferredPage = a11yPage - 1; // convert back to 0-based
                 float pageDistance = Math.abs(a11yPage - 1 - targetActivePage);
                 targetVisibility = MathUtils.clamp(1f - (pageDistance - 0.3f) * 1.5f, 0f, 1f);
@@ -2991,6 +2999,7 @@ public class SphereEngine implements ApplicationListener, AndroidWallpaperListen
                 if (dbg) logVisDebug("A11Y", targetVisibility);
                 return;
             }
+            if (dbg) logVisDebug("A11Y-STALE", 0f);
         }
 
         float step = xOffsetStep > 0f ? xOffsetStep : (totalPages > 1 ? 1f / (totalPages - 1) : 0f);
