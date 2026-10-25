@@ -62,4 +62,12 @@
             android:title="Developer"
             android:summary="Jaimin Detroja" />
     </PreferenceCategory>
+
+    <!-- Troubleshooting -->
+    <PreferenceCategory android:title="@string/pref_category_troubleshooting">
+        <Preference
+            android:key="pref_troubleshoot_sphere"
+            android:title="@string/pref_troubleshoot_sphere_title"
+            android:summary="@string/pref_troubleshoot_sphere_summary" />
+    </PreferenceCategory>
 </PreferenceScreen>

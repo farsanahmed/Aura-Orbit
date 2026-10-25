@@ -342,6 +342,15 @@ public class LiveWallpaperSettings extends AppCompatActivity {
                 });
             }
 
+            // ─── pref_troubleshoot_sphere → diagnostic dialog ──────────────
+            Preference troubleshoot = findPreference("pref_troubleshoot_sphere");
+            if (troubleshoot != null) {
+                troubleshoot.setOnPreferenceClickListener(pref -> {
+                    showTroubleshootDialog();
+                    return true;
+                });
+            }
+
         }
 
         @Override
@@ -572,6 +581,36 @@ public class LiveWallpaperSettings extends AppCompatActivity {
                     .setTitle(R.string.dialog_gesture_tips_title)
                     .setMessage(R.string.dialog_gesture_tips_message)
                     .setPositiveButton(R.string.dialog_gesture_tips_ok, null)
+                    .show();
+        }
+
+        /** Opens the "Sphere not showing?" diagnostic dialog. */
+        private void showTroubleshootDialog() {
+            new MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.dialog_troubleshoot_title)
+                    .setMessage(R.string.dialog_troubleshoot_message)
+                    .setItems(new CharSequence[]{
+                            getString(R.string.dialog_troubleshoot_battery),
+                            getString(R.string.dialog_troubleshoot_a11y),
+                            getString(R.string.dialog_troubleshoot_wallpaper),
+                            getString(R.string.dialog_troubleshoot_close)
+                    }, (dialog, which) -> {
+                        if (which == 0) {
+                            // Battery settings for this app
+                            Intent i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.parse("package:" + requireContext().getPackageName()));
+                            startActivity(i);
+                        } else if (which == 1) {
+                            // Accessibility settings
+                            Intent i = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                            startActivity(i);
+                        } else if (which == 2) {
+                            // Live wallpaper picker
+                            Intent i = new Intent(WallpaperManager.ACTION_LIVE_WALLPAPER_CHOOSER);
+                            startActivity(i);
+                        }
+                        // which == 3 is "Close" — dismiss, do nothing
+                    })
                     .show();
         }
 

@@ -150,4 +150,18 @@
     <string name="title_permanent_sphere">Permanent Sphere</string>
     <string name="pref_permanent_sphere_enabled">Show Permanent Sphere</string>
 
+    <!-- Sphere troubleshooting -->
+    <string name="pref_category_troubleshooting">Troubleshooting</string>
+    <string name="pref_troubleshoot_sphere_title">Sphere not showing?</string>
+    <string name="pref_troubleshoot_sphere_summary">Open battery / accessibility settings or the live wallpaper picker to fix common issues</string>
+    <string name="dialog_troubleshoot_title">Sphere not showing?</string>
+    <string name="dialog_troubleshoot_message">The Permanent Sphere live wallpaper can disappear after you open another app and return home. This is usually because one of these permissions is missing or the wallpaper wasn\'t re-applied. Tap a button to fix it:</string>
+    <string name="dialog_troubleshoot_battery">Battery settings for AuraOrbit</string>
+    <string name="dialog_troubleshoot_battery_explain">Allow unrestricted battery usage so the wallpaper isn\'t killed in the background.</string>
+    <string name="dialog_troubleshoot_a11y">Accessibility settings</string>
+    <string name="dialog_troubleshoot_a11y_explain">Enable the AuraOrbit accessibility service so the sphere knows which home page you\'re on and when the app drawer is open.</string>
+    <string name="dialog_troubleshoot_wallpaper">Live wallpaper picker</string>
+    <string name="dialog_troubleshoot_wallpaper_explain">Re-apply AuraOrbit as your live wallpaper. This resets the sphere and often fixes a missing sphere.</string>
+    <string name="dialog_troubleshoot_close">Close</string>
+
 </resources>
